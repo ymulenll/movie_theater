@@ -2,10 +2,14 @@ import React, { memo } from 'react';
 import styles from './MoviesGrid.module.css';
 import { useHistory } from 'react-router-dom';
 import placeholder from '../../placeholder.jpg';
+import getStarsRating from '../../utils/getStarsRating';
 
 const MoviesGrid = ({ stars, movies }) => {
-  const filterByStars = ({ vote_average }) =>
-    stars === 0 || (stars * 2 >= vote_average && stars * 2 - 2 < vote_average);
+  const filterByStars = ({ vote_average }) => {
+    const starsRating = getStarsRating(vote_average);
+    return stars === 0 || stars === starsRating;
+  };
+
   const history = useHistory();
 
   const moviesFiltered = movies.filter(filterByStars);

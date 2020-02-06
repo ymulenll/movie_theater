@@ -6,6 +6,7 @@ import styles from './MovieDetails.module.css';
 import Rating from '../../components/Rating';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
+import getStarsRating from '../../utils/getStarsRating';
 
 const MovieDetails = () => {
   const { id } = useParams();
@@ -47,7 +48,7 @@ const MovieDetails = () => {
             </div>
             <div>
               <span>Rating:</span>
-              <Rating stars={Math.ceil(movie.vote_average / 2)} viewOnly />
+              <Rating stars={getStarsRating(movie.vote_average)} viewOnly />
             </div>
             {!!movie.release_date && (
               <div>

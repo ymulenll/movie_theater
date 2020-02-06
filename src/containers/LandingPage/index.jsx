@@ -11,6 +11,7 @@ const LandingPage = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [stars, setStars] = useState(0);
+
   const onChangeStars = starPosition => {
     const newStars = starPosition === stars ? 0 : starPosition;
     setStars(newStars);

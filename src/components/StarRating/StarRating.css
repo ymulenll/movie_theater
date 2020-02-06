@@ -1,4 +1,4 @@
-:root {
+#star_rating {
   --color-star-checked: yellow;
   --color-star: white;
 }
@@ -17,10 +17,6 @@
   height: 1.2em;
   color: var(--color-star-checked);
   cursor: pointer;
-  /* Transparent border-bottom avoids jumping
-	   when a colored border is applied
-		 on :hover/:focus */
-  border-bottom: 2px solid transparent;
 }
 #star_rating output {
   font-size: 1.5em;
@@ -31,9 +27,6 @@
 }
 #star_rating input:checked + label {
   color: var(--color-star-checked);
-}
-#star_rating input:focus + label {
-  border-bottom-style: dotted;
 }
 #star_rating:hover input + label {
   color: var(--color-star-checked);

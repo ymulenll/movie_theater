@@ -9,6 +9,7 @@ const Search = ({ search, setSearch }) => {
       placeholder='Search movies...'
       onChange={element => setSearch(element.target.value)}
       value={search}
+      aria-label='Search movies'
     />
   );
 };

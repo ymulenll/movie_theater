@@ -1,0 +1,33 @@
+.details {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.detailsContent {
+  font-size: 4vmin;
+  text-align: left;
+  padding: 1rem;
+  max-width: 600px;
+}
+
+.detailsContent > div {
+  padding-bottom: 10px;
+}
+
+.detailsContent > div > span {
+  font-weight: bold;
+}
+
+.imageContainer {
+  padding: 1rem;
+  width: 500px;
+}
+
+.image {
+  max-width: 500px;
+  width: 100%;
+  height: auto;
+  border-radius: 5%;
+}

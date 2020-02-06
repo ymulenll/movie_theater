@@ -1,5 +1,5 @@
 const headers = new Headers();
-// API Key: 57537ff19f381dd7b67eee1ea8b8164a
+
 headers.append('Accept', 'application/json');
 headers.append(
   'Authorization',

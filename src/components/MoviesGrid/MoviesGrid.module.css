@@ -1,0 +1,27 @@
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 230px);
+  justify-content: space-around;
+}
+
+.gridItem {
+  padding: 20px;
+  font-size: 20px;
+  text-align: center;
+}
+
+.image:hover {
+  filter: alpha(opacity=80);
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.image {
+  border-radius: 5%;
+}
+
+.noResults {
+  font-size: 30px;
+  text-align: center;
+  padding: 40px;
+}

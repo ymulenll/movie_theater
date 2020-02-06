@@ -6,3 +6,7 @@
   font-size: 2rem;
   cursor: pointer;
 }
+
+.viewOnly {
+  cursor: unset;
+}

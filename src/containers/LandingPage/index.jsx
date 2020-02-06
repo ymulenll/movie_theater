@@ -1,10 +1,10 @@
 import React, { useEffect, useState, memo } from 'react';
 import { get } from '../../utils/apiClient';
-import styles from './LandingPage.module.css';
 import Loader from '../../components/Loader';
-import placeholder from '../../placeholder.jpg';
 import Search from '../../components/Search';
 import Rating from '../../components/Rating';
+import Header from '../../components/Header';
+import MoviesGrid from '../../components/MoviesGrid';
 
 const LandingPage = () => {
   const [search, setSearch] = useState('');
@@ -32,34 +32,13 @@ const LandingPage = () => {
     getMovies();
   }, [search]);
 
-  const filterByStars = ({ vote_average }) =>
-    stars === 0 || (stars * 2 > vote_average && stars * 2 - 2 <= vote_average);
-
   return (
     <div>
-      <h1 className={styles.header}>FILMIX Theather</h1>
+      <Header />
       <Search search={search} setSearch={setSearch} />
       <Rating stars={stars} onChangeStars={onChangeStars} />
       {loading && <Loader />}
-      {!loading && (
-        <div className={styles.gridContainer}>
-          {movies.filter(filterByStars).map(movie => (
-            <div key={movie.id} className={styles.gridItem}>
-              <img
-                width='100%'
-                src={
-                  movie.poster_path
-                    ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
-                    : placeholder
-                }
-                alt={movie.title}
-                className={styles.image}
-              />
-              <div>{movie.title}</div>
-            </div>
-          ))}
-        </div>
-      )}
+      {!loading && <MoviesGrid movies={movies} stars={stars} />}
     </div>
   );
 };

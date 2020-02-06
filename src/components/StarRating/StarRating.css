@@ -1,0 +1,62 @@
+:root {
+  --color-star-checked: yellow;
+  --color-star: white;
+}
+
+#star_rating svg {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+  stroke: currentColor;
+}
+#star_rating label,
+#star_rating output {
+  display: block;
+  float: left;
+  font-size: 2em;
+  height: 1.2em;
+  color: var(--color-star-checked);
+  cursor: pointer;
+  /* Transparent border-bottom avoids jumping
+	   when a colored border is applied
+		 on :hover/:focus */
+  border-bottom: 2px solid transparent;
+}
+#star_rating output {
+  font-size: 1.5em;
+  padding: 0 1em;
+}
+#star_rating input:checked ~ label {
+  color: var(--color-star);
+}
+#star_rating input:checked + label {
+  color: var(--color-star-checked);
+}
+#star_rating input:focus + label {
+  border-bottom-style: dotted;
+}
+#star_rating:hover input + label {
+  color: var(--color-star-checked);
+}
+#star_rating input:hover ~ label,
+#star_rating input:focus ~ label,
+#star_rating input[id='star0'] + label {
+  color: var(--color-star);
+}
+#star_rating input:hover + label,
+#star_rating input:focus + label {
+  color: var(--color-star-checked);
+}
+#star_rating [type='submit'] {
+  float: none;
+}
+.visuallyhidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}

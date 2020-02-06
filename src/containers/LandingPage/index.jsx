@@ -5,6 +5,7 @@ import Search from '../../components/Search';
 import Rating from '../../components/Rating';
 import Header from '../../components/Header';
 import MoviesGrid from '../../components/MoviesGrid';
+import StarRating from '../../components/StarRating';
 
 const LandingPage = () => {
   const [search, setSearch] = useState('');
@@ -37,6 +38,7 @@ const LandingPage = () => {
     <div>
       <Header />
       <Search search={search} setSearch={setSearch} />
+      <StarRating />
       <Rating stars={stars} onChangeStars={onChangeStars} />
       {loading && <Loader />}
       {!loading && <MoviesGrid movies={movies} stars={stars} />}

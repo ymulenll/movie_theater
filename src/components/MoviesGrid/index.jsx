@@ -5,7 +5,7 @@ import placeholder from '../../placeholder.jpg';
 
 const MoviesGrid = ({ stars, movies }) => {
   const filterByStars = ({ vote_average }) =>
-    stars === 0 || (stars * 2 > vote_average && stars * 2 - 2 <= vote_average);
+    stars === 0 || (stars * 2 >= vote_average && stars * 2 - 2 < vote_average);
   const history = useHistory();
 
   const moviesFiltered = movies.filter(filterByStars);

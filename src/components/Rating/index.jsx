@@ -25,12 +25,16 @@ const Rating = ({ stars, onChangeStars, viewOnly }) => {
             viewOnly || onChangeStars(starPosition);
           }}
           viewOnly={viewOnly}
-          onMouseOver={() => setStarOver(starPosition)}
-          onMouseLeave={() => setStarOver(0)}
+          onMouseOver={() => !viewOnly && setStarOver(starPosition)}
+          onMouseLeave={() => !viewOnly && setStarOver(0)}
         />
       ))}
     </div>
   );
 };
 
-export default memo(Rating);
+export default memo(
+  Rating,
+  (prevProps, props) =>
+    prevProps.stars === props.stars && prevProps.viewOnly === props.viewOnly,
+);

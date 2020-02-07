@@ -1,30 +1,13 @@
-import React, { useEffect, useState, memo } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
-import { get } from '../../utils/apiClient';
-import placeholder from '../../placeholder.jpg';
+import React, { memo } from 'react';
+import Header from '../Header';
+import Loader from '../Loader';
 import styles from './MovieDetails.module.css';
-import Rating from '../../components/Rating';
-import Header from '../../components/Header';
-import Loader from '../../components/Loader';
+import Rating from '../Rating';
 import getStarsRating from '../../utils/getStarsRating';
+import getImgSrc from '../../utils/getImgSrc';
+import formatDate from '../../utils/formatDate';
 
-const MovieDetails = () => {
-  const { id } = useParams();
-  const [loading, setLoading] = useState(false);
-  const [movie, setMovie] = useState({});
-  const history = useHistory();
-
-  useEffect(() => {
-    const fetchMovie = async () => {
-      setLoading(true);
-      const fetchedMovie = await get(`movie/${id}`);
-      setMovie(fetchedMovie);
-      setLoading(false);
-    };
-
-    fetchMovie();
-  }, [id, history]);
-
+const MovieDetails = ({ loading, movie }) => {
   return (
     <div>
       <Header />
@@ -34,11 +17,7 @@ const MovieDetails = () => {
           <div className={styles.imageContainer}>
             <img
               className={styles.image}
-              src={
-                movie.poster_path
-                  ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                  : placeholder
-              }
+              src={getImgSrc(movie.poster_path, 500)}
               alt={movie.title}
             />
           </div>
@@ -52,7 +31,12 @@ const MovieDetails = () => {
             </div>
             {!!movie.release_date && (
               <div>
-                <span>Release date:</span> {movie.release_date}
+                <span>Release date:</span> {formatDate(movie.release_date)}
+              </div>
+            )}
+            {!!movie.genres?.length && (
+              <div>
+                <span>Genres:</span> {movie.genres.map(g => g.name).join(', ')}
               </div>
             )}
             {!!movie.overview && (

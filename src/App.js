@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import LandingPage from './containers/LandingPage';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import MovieDetails from './containers/MovieDetails';
+import MovieDetailsPage from './containers/MovieDetailsPage';
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
       <main className='App-header'>
         <Router>
           <Switch>
-            <Route exact path='/movies/:id' component={MovieDetails} />
+            <Route exact path='/movies/:id' component={MovieDetailsPage} />
             <Route path='/' component={LandingPage} />
           </Switch>
         </Router>

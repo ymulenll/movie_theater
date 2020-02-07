@@ -1,11 +1,11 @@
 import React, { useState, memo, useEffect } from 'react';
 import { get } from '../../utils/apiClient';
-import Loader from '../../components/Loader';
 import Search from '../../components/Search';
 import Rating from '../../components/Rating';
 import Header from '../../components/Header';
 import MoviesGrid from '../../components/MoviesGrid';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import useDebounce from '../../utils/useDebounce';
 
 const LandingPage = () => {
   const [search, setSearch] = useState('');
@@ -14,6 +14,8 @@ const LandingPage = () => {
   const [hasMore, setHasMore] = useState(true);
   const [stars, setStars] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [debouncing, setDebouncing] = useState(false);
+  const debouncedSearch = useDebounce(search, 300);
 
   const onChangeStars = starPosition => {
     const newStars = starPosition === stars ? 0 : starPosition;
@@ -23,12 +25,14 @@ const LandingPage = () => {
   const onSetSearch = newSearch => {
     setPage(1);
     setSearch(newSearch);
+    setDebouncing(true);
   };
 
   const incrementPage = () => setPage(p => p + 1);
 
   useEffect(() => {
-    const getMovies = async () => {
+    const fetchMovies = async (search, page) => {
+      setDebouncing(false);
       setLoading(true);
       let fetchedMovies;
       if (search) {
@@ -36,6 +40,13 @@ const LandingPage = () => {
       } else {
         fetchedMovies = await get(`discover/movie?page=${page}`);
       }
+      setLoading(false);
+
+      return fetchedMovies;
+    };
+
+    const getMovies = async () => {
+      const fetchedMovies = await fetchMovies(debouncedSearch, page);
 
       if (page > 1) {
         setMovies(m => [...m, ...fetchedMovies.results]);
@@ -43,10 +54,10 @@ const LandingPage = () => {
         setMovies(fetchedMovies.results);
       }
       setHasMore(fetchedMovies.page < fetchedMovies.total_pages);
-      setLoading(false);
     };
+
     getMovies();
-  }, [page, search]);
+  }, [page, debouncedSearch]);
 
   return (
     <div>
@@ -57,9 +68,13 @@ const LandingPage = () => {
         dataLength={movies.length}
         next={incrementPage}
         hasMore={hasMore && stars === 0}
-        loader={<Loader key={movies.length} />}
       >
-        <MoviesGrid movies={movies} stars={stars} loading={loading} />
+        <MoviesGrid
+          movies={movies}
+          stars={stars}
+          loading={loading}
+          debouncing={debouncing}
+        />
       </InfiniteScroll>
     </div>
   );

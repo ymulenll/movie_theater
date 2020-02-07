@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 import styles from './MoviesGrid.module.css';
 import { useHistory } from 'react-router-dom';
-import placeholder from '../../placeholder.jpg';
 import getStarsRating from '../../utils/getStarsRating';
+import getImgSrc from '../../utils/getImgSrc';
 
 const MoviesGrid = ({ stars, movies }) => {
   const filterByStars = ({ vote_average }) => {
@@ -26,11 +26,7 @@ const MoviesGrid = ({ stars, movies }) => {
           <div key={movie.id} className={styles.gridItem}>
             <img
               width='100%'
-              src={
-                movie.poster_path
-                  ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
-                  : placeholder
-              }
+              src={getImgSrc(movie.poster_path, 300)}
               alt={movie.title}
               className={styles.image}
               onClick={() => history.push(`/movies/${movie.id}`)}

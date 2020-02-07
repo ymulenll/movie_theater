@@ -3,8 +3,9 @@ import styles from './MoviesGrid.module.css';
 import { useHistory } from 'react-router-dom';
 import getStarsRating from '../../utils/getStarsRating';
 import getImgSrc from '../../utils/getImgSrc';
+import Loader from '../Loader';
 
-const MoviesGrid = ({ stars, movies }) => {
+const MoviesGrid = ({ stars, movies, loading, debouncing, initialLoad }) => {
   const filterByStars = ({ vote_average }) => {
     const starsRating = getStarsRating(vote_average);
     return stars === 0 || stars === starsRating;
@@ -16,25 +17,28 @@ const MoviesGrid = ({ stars, movies }) => {
 
   return (
     <>
-      {moviesFiltered.length === 0 && (
+      <div>Total: {moviesFiltered.length}</div>
+      {!loading && !debouncing && moviesFiltered.length === 0 && (
         <div className={styles.noResults}>
           No results found, please try with other filters...
         </div>
       )}
       <div className={styles.gridContainer}>
-        {moviesFiltered.map(movie => (
-          <div key={movie.id} className={styles.gridItem}>
-            <img
-              width='100%'
-              src={getImgSrc(movie.poster_path, 300)}
-              alt={movie.title}
-              className={styles.image}
-              onClick={() => history.push(`/movies/${movie.id}`)}
-            />
-            <div>{movie.title}</div>
-          </div>
-        ))}
+        {(!loading || !initialLoad) &&
+          moviesFiltered.map(movie => (
+            <div key={movie.id} className={styles.gridItem}>
+              <img
+                width='100%'
+                src={getImgSrc(movie.poster_path, 300)}
+                alt={movie.title}
+                className={styles.image}
+                onClick={() => history.push(`/movies/${movie.id}`)}
+              />
+              <div>{movie.title}</div>
+            </div>
+          ))}
       </div>
+      {loading && <Loader />}
     </>
   );
 };

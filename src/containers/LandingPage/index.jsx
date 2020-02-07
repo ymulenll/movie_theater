@@ -1,4 +1,4 @@
-import React, { useState, memo, useEffect } from 'react';
+import React, { useState, memo, useEffect, useCallback } from 'react';
 import { get } from '../../utils/apiClient';
 import Search from '../../components/Search';
 import Rating from '../../components/Rating';
@@ -17,10 +17,12 @@ const LandingPage = () => {
   const [debouncing, setDebouncing] = useState(false);
   const debouncedSearch = useDebounce(search, 300);
 
-  const onChangeStars = starPosition => {
-    const newStars = starPosition === stars ? 0 : starPosition;
-    setStars(newStars);
-  };
+  const onChangeStars = useCallback(() => {
+    return starPosition => {
+      const newStars = starPosition === stars ? 0 : starPosition;
+      setStars(newStars);
+    };
+  }, [stars]);
 
   const onSetSearch = newSearch => {
     setPage(1);

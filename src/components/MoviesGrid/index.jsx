@@ -14,6 +14,7 @@ const MoviesGrid = ({ stars, movies, loading, debouncing, initialLoad }) => {
   const history = useHistory();
 
   const moviesFiltered = movies.filter(filterByStars);
+  const redirectToDetails = movieId => history.push(`/movies/${movieId}`);
 
   return (
     <>
@@ -25,14 +26,18 @@ const MoviesGrid = ({ stars, movies, loading, debouncing, initialLoad }) => {
       )}
       <div className={styles.gridContainer}>
         {(!loading || !initialLoad) &&
-          moviesFiltered.map(movie => (
+          moviesFiltered.map((movie, index) => (
             <div key={movie.id} className={styles.gridItem}>
               <img
                 width='100%'
                 src={getImgSrc(movie.poster_path, 300)}
                 alt={movie.title}
                 className={styles.image}
-                onClick={() => history.push(`/movies/${movie.id}`)}
+                onClick={() => redirectToDetails(movie.id)}
+                onKeyDown={({ key }) =>
+                  key === 'Enter' && redirectToDetails(movie.id)
+                }
+                tabIndex={0}
               />
               <div>{movie.title}</div>
             </div>

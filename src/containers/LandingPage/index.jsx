@@ -25,6 +25,8 @@ const LandingPage = () => {
     setSearch(newSearch);
   };
 
+  const incrementPage = () => setPage(p => p + 1);
+
   useEffect(() => {
     const getMovies = async () => {
       setLoading(true);
@@ -53,7 +55,7 @@ const LandingPage = () => {
       <Rating stars={stars} onChangeStars={onChangeStars} />
       <InfiniteScroll
         dataLength={movies.length}
-        next={() => setPage(page + 1)}
+        next={incrementPage}
         hasMore={hasMore && stars === 0}
         loader={<Loader key={movies.length} />}
       >

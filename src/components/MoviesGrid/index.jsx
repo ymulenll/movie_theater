@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import placeholder from '../../placeholder.jpg';
 import getStarsRating from '../../utils/getStarsRating';
 
-const MoviesGrid = ({ stars, movies }) => {
+const MoviesGrid = ({ stars, movies, loading }) => {
   const filterByStars = ({ vote_average }) => {
     const starsRating = getStarsRating(vote_average);
     return stars === 0 || stars === starsRating;
@@ -16,7 +16,8 @@ const MoviesGrid = ({ stars, movies }) => {
 
   return (
     <>
-      {moviesFiltered.length === 0 && (
+      <div>Total: {moviesFiltered.length}</div>
+      {moviesFiltered.length === 0 && !loading && (
         <div className={styles.noResults}>
           No results found, please try with other filters...
         </div>

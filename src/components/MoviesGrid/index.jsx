@@ -5,7 +5,7 @@ import placeholder from '../../placeholder.jpg';
 import getStarsRating from '../../utils/getStarsRating';
 import Loader from '../Loader';
 
-const MoviesGrid = ({ stars, movies, loading, debouncing }) => {
+const MoviesGrid = ({ stars, movies, loading, debouncing, initialLoad }) => {
   const filterByStars = ({ vote_average }) => {
     const starsRating = getStarsRating(vote_average);
     return stars === 0 || stars === starsRating;
@@ -24,7 +24,7 @@ const MoviesGrid = ({ stars, movies, loading, debouncing }) => {
         </div>
       )}
       <div className={styles.gridContainer}>
-        {!loading &&
+        {(!loading || !initialLoad) &&
           moviesFiltered.map(movie => (
             <div key={movie.id} className={styles.gridItem}>
               <img

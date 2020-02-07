@@ -74,6 +74,7 @@ const LandingPage = () => {
           stars={stars}
           loading={loading}
           debouncing={debouncing}
+          initialLoad={page === 1}
         />
       </InfiniteScroll>
     </div>

@@ -10,6 +10,7 @@ const Search = ({ search, setSearch }) => {
       onChange={element => setSearch(element.target.value)}
       value={search}
       aria-label='Search movies'
+      autoFocus
     />
   );
 };

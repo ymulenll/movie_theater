@@ -2,6 +2,9 @@ This is a client app to display movies consuming The Movie Database API (https:/
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+CodeSandbox to explore de code and preview the resulting website here:
+https://codesandbox.io/s/github/ymulenll/movie_theater/
+
 ## Available Scripts
 
 In the project directory, you can run:

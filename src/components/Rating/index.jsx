@@ -14,6 +14,7 @@ const Star = ({ checked, onClick, viewOnly, onMouseOver, onMouseLeave }) => (
 
 const Rating = ({ stars, onChangeStars, viewOnly }) => {
   const [starOver, setStarOver] = useState(0);
+
   return (
     <div>
       {[1, 2, 3, 4, 5].map(starPosition => (
@@ -33,8 +34,4 @@ const Rating = ({ stars, onChangeStars, viewOnly }) => {
   );
 };
 
-export default memo(
-  Rating,
-  (prevProps, props) =>
-    prevProps.stars === props.stars && prevProps.viewOnly === props.viewOnly,
-);
+export default memo(Rating);

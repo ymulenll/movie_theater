@@ -1,59 +1,58 @@
-import React, { useState, memo, useEffect } from 'react';
+import React, {
+  useState,
+  memo,
+  useEffect,
+  useReducer,
+  useCallback,
+} from 'react';
 import { get } from '../../utils/apiClient';
 import Search from '../../components/Search';
 import Rating from '../../components/Rating';
 import Header from '../../components/Header';
 import MoviesGrid from '../../components/MoviesGrid';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import useDebounce from '../../utils/useDebounce';
+import useDebounce from '../../hooks/useDebounce';
 
 const LandingPage = () => {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
-  const [movies, setMovies] = useState([]);
-  const [hasMore, setHasMore] = useState(true);
-  const [stars, setStars] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [debouncing, setDebouncing] = useState(false);
-  const debouncedSearch = useDebounce(search, 300);
+  const [debouncedSearch, debouncing] = useDebounce(search, 300);
 
-  const onChangeStars = starPosition => {
-    const newStars = starPosition === stars ? 0 : starPosition;
-    setStars(newStars);
+  const [stars, setStars] = useState(0);
+
+  const initialState = {
+    movies: [],
+    hasMore: true,
+    loading: false,
   };
 
-  const onSetSearch = newSearch => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const onChangeStars = useCallback(starPosition => {
+    setStars(value => (starPosition === value ? 0 : starPosition));
+  }, []);
+
+  const onSetSearch = useCallback(newSearch => {
     setPage(1);
     setSearch(newSearch);
-    setDebouncing(true);
-  };
+  }, []);
 
   const incrementPage = () => setPage(p => p + 1);
 
   useEffect(() => {
-    const fetchMovies = async (search, page) => {
-      setDebouncing(false);
-      setLoading(true);
+    const getMovies = async () => {
+      dispatch({ type: 'FETCH_INIT' });
+
       let fetchedMovies;
-      if (search) {
-        fetchedMovies = await get(`search/movie?query=${search}&page=${page}`);
+      if (debouncedSearch) {
+        fetchedMovies = await get(
+          `search/movie?query=${debouncedSearch}&page=${page}`,
+        );
       } else {
         fetchedMovies = await get(`discover/movie?page=${page}`);
       }
-      setLoading(false);
 
-      return fetchedMovies;
-    };
-
-    const getMovies = async () => {
-      const fetchedMovies = await fetchMovies(debouncedSearch, page);
-
-      if (page > 1) {
-        setMovies(m => [...m, ...fetchedMovies.results]);
-      } else {
-        setMovies(fetchedMovies.results);
-      }
-      setHasMore(fetchedMovies.page < fetchedMovies.total_pages);
+      dispatch({ type: 'FETCH_SUCCESS', payload: fetchedMovies });
     };
 
     getMovies();
@@ -65,20 +64,40 @@ const LandingPage = () => {
       <Search search={search} setSearch={onSetSearch} />
       <Rating stars={stars} onChangeStars={onChangeStars} />
       <InfiniteScroll
-        dataLength={movies.length}
+        dataLength={state.movies.length}
         next={incrementPage}
-        hasMore={hasMore && stars === 0}
+        hasMore={state.hasMore && stars === 0}
       >
         <MoviesGrid
-          movies={movies}
+          movies={state.movies}
           stars={stars}
-          loading={loading}
+          loading={state.loading}
           debouncing={debouncing}
           initialLoad={page === 1}
         />
       </InfiniteScroll>
     </div>
   );
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'FETCH_INIT':
+      return { ...state, loading: true };
+    case 'FETCH_SUCCESS':
+      return {
+        ...state,
+        loading: false,
+        movies:
+          action.payload.page > 1
+            ? [...state.movies, ...action.payload.results]
+            : action.payload.results,
+        hasMore: action.payload.page < action.payload.total_pages,
+      };
+
+    default:
+      throw new Error('action.type can not be empty');
+  }
 };
 
 export default memo(LandingPage);

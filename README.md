@@ -5,6 +5,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 CodeSandbox to explore de code and preview the resulting website here:
 https://codesandbox.io/s/github/ymulenll/movie_theater/
 
+Production deployment: https://movie-theater.vercel.app/
+
 ## Available Scripts
 
 In the project directory, you can run:
